@@ -1,0 +1,104 @@
+import json
+import os
+
+data_file = "data.json"
+
+# Load existing data or create empty list
+if os.path.exists(data_file):
+    with open(data_file, "r") as f:
+        try:
+            expenses = json.load(f)
+        except json.JSONDecodeError:
+            expenses = []
+else:
+    expenses = []
+    with open(data_file, "w") as f:
+        json.dump(expenses, f)
+
+def save_data():
+    with open(data_file, "w") as f:
+        json.dump(expenses, f, indent=4)
+
+def add_expense():
+    amount = float(input("Enter amount: "))
+    category = input("Enter category (Food, Travel, Shopping, etc): ")
+    note = input("Enter note: ")
+
+    expenses.append({
+        "amount": amount,
+        "category": category,
+        "note": note
+    })
+
+    save_data()
+    print("Expense added successfully!\n")
+
+def view_expenses():
+    if not expenses:
+        print("No expenses found.\n")
+        return
+
+    for i, exp in enumerate(expenses, start=1):
+        print(f"{i}. ₹{exp['amount']} - {exp['category']} ({exp['note']})")
+    print()
+
+def delete_expense():
+    view_expenses()
+    num = int(input("Enter expense number to delete: ")) - 1
+
+    if 0 <= num < len(expenses):
+        expenses.pop(num)
+        save_data()
+        print("Expense deleted.\n")
+    else:
+        print("Invalid choice.\n")
+
+def edit_expense():
+    view_expenses()
+    num = int(input("Enter number to edit: ")) - 1
+
+    if 0 <= num < len(expenses):
+        new_amount = float(input("New amount: "))
+        new_category = input("New category: ")
+        new_note = input("New note: ")
+
+        expenses[num]["amount"] = new_amount
+        expenses[num]["category"] = new_category
+        expenses[num]["note"] = new_note
+
+        save_data()
+        print("Expense updated!\n")
+    else:
+        print("Invalid choice.\n")
+
+def total_expense():
+    total = sum(exp["amount"] for exp in expenses)
+    print(f"Total Expense = ₹{total}\n")
+
+# MAIN MENU
+while True:
+    print("=== EXPENSE TRACKER ===")
+    print("1. Add Expense")
+    print("2. View Expenses")
+    print("3. Edit Expense")
+    print("4. Delete Expense")
+    print("5. Total Expense")
+    print("6. Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        add_expense()
+    elif choice == "2":
+        view_expenses()
+    elif choice == "3":
+        edit_expense()
+    elif choice == "4":
+        delete_expense()
+    elif choice == "5":
+        total_expense()
+    elif choice == "6":
+        print("Exiting... Bye!")
+        break
+    else:
+        print("Invalid choice. Try again.\n")
