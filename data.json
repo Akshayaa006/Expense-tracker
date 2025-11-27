@@ -1,7 +1,22 @@
 [
     {
         "amount": 5000.0,
-        "category": "food",
+        "category": "investments",
+        "note": "salary"
+    }
+    {
+        "amount": 5000.0,
+        "category": "groceries",
+        "note": "salary"
+    }
+    {
+        "amount": 5000.0,
+        "category": "shopping",
+        "note": "salary"
+    }
+    {
+        "amount": 5000.0,
+        "category": "entertainment",
         "note": "salary"
     }
 ]
